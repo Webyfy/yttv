@@ -10,13 +10,14 @@ USER_AGENT = 'Roku/DVP-23.0 (23.0.0.99999-02)'
 def main():
     app = QApplication(sys.argv)
     window = QMainWindow()
-    window.setWindowTitle("App")
+    window.setWindowTitle("YouTube on TV")
 
     webview = QWebEngineView()
     webview.settings().setAttribute(QWebEngineSettings.ShowScrollBars, False)
     profile = QWebEngineProfile.defaultProfile()
     profile.setHttpUserAgent(USER_AGENT)
     webpage = QWebEnginePage(profile, webview)
+    webpage.windowCloseRequested.connect(window.close)
     webview.setPage(webpage)
     webview.load(QUrl("https://www.youtube.com/tv"))
 
