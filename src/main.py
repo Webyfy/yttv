@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
-from PySide2.QtCore import QUrl
+from PySide2.QtCore import QUrl, Qt
 from PySide2.QtWidgets import QApplication,QMainWindow
 from PySide2.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings, QWebEngineProfile, QWebEnginePage
 
@@ -27,6 +27,7 @@ def main():
 
     webview = QWebEngineView()
     webview.settings().setAttribute(QWebEngineSettings.ShowScrollBars, False)
+    webview.setContextMenuPolicy(Qt.NoContextMenu)
     profile = QWebEngineProfile.defaultProfile()
     profile.setHttpUserAgent(USER_AGENT)
     webpage = WebEnginePage(window, profile, webview)
