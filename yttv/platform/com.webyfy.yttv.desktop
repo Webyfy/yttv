@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=YouTube on TV
+GenericName=YouTube
+Comment=YouTube for 10 foot UI with D-pad navigation
+Exec=env GDK_BACKEND=x11 yttv
+Icon=com.webyfy.yttv.png
+Terminal=false
+Type=Application
+Categories=Network;Video;AudioVideo;
