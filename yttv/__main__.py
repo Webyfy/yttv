@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
+from PySide2.QtGui import QIcon
 from PySide2.QtCore import QUrl, Qt
 from PySide2.QtWidgets import QApplication,QMainWindow
 from PySide2.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings, QWebEngineProfile, QWebEnginePage
@@ -24,6 +25,7 @@ def main():
     app = QApplication(sys.argv)
     window = QMainWindow()
     window.setWindowTitle("YouTube on TV")
+    window.setWindowIcon(QIcon.fromTheme("com.webyfy.yttv"))
 
     webview = QWebEngineView()
     webview.settings().setAttribute(QWebEngineSettings.ShowScrollBars, False)

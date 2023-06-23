@@ -1,7 +1,5 @@
-yttv (0.3.5) alpha; urgency=medium
+yttv (0.3.6) alpha; urgency=medium
 
-  * Initial release
-  * basic site specific browser with custom user agent
-  * right click disabled
+  * Add window icon
 
  -- webyfy <info@webyfy.com>  Wed, 03 May 2023 15:36:43 +0530

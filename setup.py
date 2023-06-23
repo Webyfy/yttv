@@ -40,7 +40,7 @@ def __package_data():
 
 setuptools.setup(
     name="yttv",
-    version="0.3.5",
+    version="0.3.6",
     description="YouTube for 10 foot UI with D-pad navigation.",
     long_description=long_description,
     long_description_content_type="text/markdown",
