@@ -11,7 +11,7 @@ APP_ID = "com.webyfy.yttv"
 
 def main():
     parser = argparse.ArgumentParser(prog='yttv', description='YouTube for 10 foot UI with D-pad navigation.')
-    parser.add_argument('--debug', help=('start YouTube on TV in debug mode'), action='store_true')
+    parser.add_argument('-d', '--debug', help='start YouTube on TV in debug mode', action='store_true')
     args = parser.parse_args()
     utility.intialize_logging(args.debug)
 

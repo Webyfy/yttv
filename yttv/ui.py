@@ -1,6 +1,7 @@
+import logging
 from PySide2.QtGui import QIcon
 from PySide2.QtCore import QUrl, Qt
-from PySide2.QtWidgets import QApplication,QMainWindow
+from PySide2.QtWidgets import QMainWindow
 from PySide2.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings, QWebEngineProfile, QWebEnginePage
 
 USER_AGENT = 'Roku/DVP-23.0 (23.0.0.99999-02)'
@@ -14,8 +15,15 @@ class WebEnginePage(QWebEnginePage):
     def javaScriptConsoleMessage(self, level, message, lineNumber, sourceID):  
         if (level == QWebEnginePage.JavaScriptConsoleMessageLevel.WarningMessageLevel) and \
             WINDOW_CLOSE_ERROR.casefold() in message.casefold():
-            self.parent_self.close()
-        print(f"js: {message}")
+            self.parent_window.close()
+
+        if (level == QWebEnginePage.JavaScriptConsoleMessageLevel.InfoMessageLevel):
+            logging.info(f"js: {message}")
+        elif (level == QWebEnginePage.JavaScriptConsoleMessageLevel.WarningMessageLevel):
+            logging.warn(f"js: {message}")
+        else: # QWebEnginePage.JavaScriptConsoleMessageLevel.ErrorMessageLevel
+            logging.error(f"js: {message}")
+            
 
 class MainWindow(QMainWindow):
     def __init__(self):

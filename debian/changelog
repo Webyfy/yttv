@@ -1,5 +1,9 @@
-yttv (0.4.0) alpha; urgency=medium
+yttv (0.4.1) alpha; urgency=medium
 
-  * Implement single instance mode
+  * set custom console handler for debugging
+
+  * add logging for javaScript Console Messages
+
+  * fix, quit on exit
 
  -- webyfy <info@webyfy.com>  Wed, 24 June 2023 12:47:03 +0530

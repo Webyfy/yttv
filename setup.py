@@ -40,14 +40,14 @@ def __package_data():
 
 setuptools.setup(
     name="yttv",
-    version="0.4.0",
+    version="0.4.1",
     description="YouTube for 10 foot UI with D-pad navigation.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="Webyfy",
     author_email="info@webyfy.com",
     url="https://gitlab.com/webyfy/iot/e-gurukul/yttv",
-    # download_url="https://gitlab.com/webyfy/iot/e-gurukul/yttv/archive/v0.4.0.tar.gz",
+    # download_url="https://gitlab.com/webyfy/iot/e-gurukul/yttv/archive/v0.4.1.tar.gz",
     packages=setuptools.find_packages(),
     package_data={'yttv': __package_data()},
     data_files=__data_files(),
