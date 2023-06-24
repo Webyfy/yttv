@@ -1,5 +1,5 @@
-yttv (0.3.6) alpha; urgency=medium
+yttv (0.4.0) alpha; urgency=medium
 
-  * Add window icon
+  * Implement single instance mode
 
- -- webyfy <info@webyfy.com>  Wed, 03 May 2023 15:36:43 +0530
+ -- webyfy <info@webyfy.com>  Wed, 24 June 2023 12:47:03 +0530

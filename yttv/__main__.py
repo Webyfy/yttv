@@ -1,46 +1,29 @@
 #!/usr/bin/env python3
-
+import argparse
+import logging
 import sys
-from PySide2.QtGui import QIcon
-from PySide2.QtCore import QUrl, Qt
-from PySide2.QtWidgets import QApplication,QMainWindow
-from PySide2.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings, QWebEngineProfile, QWebEnginePage
 
-USER_AGENT = 'Roku/DVP-23.0 (23.0.0.99999-02)'
-WINDOW_CLOSE_ERROR = "Scripts may close only the windows that were opened by them."
+from yttv import utility
+from yttv.QtSingleApplication import QtSingleApplication
+from yttv.ui import MainWindow
 
-class WebEnginePage(QWebEnginePage):
-    def __init__(self, window, profile, webview):
-        QWebEnginePage.__init__(self, profile, webview)
-        self.parent_window = window
-    
-    def javaScriptConsoleMessage(self, level, message, lineNumber, sourceID):  
-        if (level == QWebEnginePage.JavaScriptConsoleMessageLevel.WarningMessageLevel) and \
-            WINDOW_CLOSE_ERROR.casefold() in message.casefold():
-            self.parent_window.close()
-        print(f"js: {message}")
-
+APP_ID = "com.webyfy.yttv"
 
 def main():
-    app = QApplication(sys.argv)
-    window = QMainWindow()
-    window.setWindowTitle("YouTube on TV")
-    window.setWindowIcon(QIcon.fromTheme("com.webyfy.yttv"))
+    parser = argparse.ArgumentParser(prog='yttv', description='YouTube for 10 foot UI with D-pad navigation.')
+    parser.add_argument('--debug', help=('start YouTube on TV in debug mode'), action='store_true')
+    args = parser.parse_args()
+    utility.intialize_logging(args.debug)
 
-    webview = QWebEngineView()
-    webview.settings().setAttribute(QWebEngineSettings.ShowScrollBars, False)
-    webview.setContextMenuPolicy(Qt.NoContextMenu)
-    profile = QWebEngineProfile.defaultProfile()
-    profile.setHttpUserAgent(USER_AGENT)
-    webpage = WebEnginePage(window, profile, webview)
-    webpage.windowCloseRequested.connect(window.close)
-    webview.setPage(webpage)
-    webview.load(QUrl("https://www.youtube.com/tv"))
-
-    window.setCentralWidget(webview)
-    window.show()
-
+    app = QtSingleApplication(APP_ID, sys.argv)
+    if app.isRunning():
+        logging.info("YouTube on TV is already running")
+        sys.exit(0)
+    
+    w = MainWindow()
+    w.show()
+    app.setActivationWindow(w)
     sys.exit(app.exec_())
-
+    
 if __name__ == "__main__":
     main()

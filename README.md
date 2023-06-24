@@ -8,6 +8,6 @@ sudo apt install python3-pyside2.qtwebenginewidgets
 
 ## TODO
 - Test user login
-- Single Instance Mode
-  - Bring existing window to front on second launch
+- ~~Single Instance Mode~~
+  - ~~Bring existing window to front on second launch~~
 - Ad blocker
