@@ -16,6 +16,7 @@ def main():
     utility.intialize_logging(args.debug)
 
     app = QtSingleApplication(APP_ID, sys.argv)
+    utility.crash_handler(app)
     if app.isRunning():
         logging.info("YouTube on TV is already running")
         sys.exit(0)

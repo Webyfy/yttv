@@ -1,5 +1,9 @@
 all: deb pip
 
+run:
+	python setup.py build
+	python -m yttv
+
 deb: clean
 	fakeroot dpkg-buildpackage -b
 
@@ -12,4 +16,4 @@ clean:
 	debian/files debian/yttv.substvars debian/yttv.prerm.debhelper \
 	debian/yttv.postinst.debhelper usr
 
-.PHONY: all deb pip clean
+.PHONY: all deb pip clean run
