@@ -1,8 +1,8 @@
 all: deb pip
 
 run:
-	python setup.py build
-	python -m yttv
+	python3 setup.py build
+	python3 -m yttv
 
 deb: clean
 	fakeroot dpkg-buildpackage -b
