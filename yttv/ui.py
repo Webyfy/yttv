@@ -1,7 +1,7 @@
 import logging
-from PySide2.QtGui import QIcon
-from PySide2.QtCore import QUrl, Qt
-from PySide2.QtWidgets import QMainWindow
+from PySide2.QtGui import QIcon, QKeySequence, QKeyEvent
+from PySide2.QtCore import QUrl, Qt, QEvent
+from PySide2.QtWidgets import QMainWindow, QShortcut, QApplication
 from PySide2.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings, QWebEngineProfile, QWebEnginePage
 
 USER_AGENT = 'Roku/DVP-23.0 (23.0.0.99999-02)'
@@ -31,6 +31,11 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("YouTube on TV")
         self.setWindowIcon(QIcon.fromTheme("com.webyfy.yttv"))
 
+        # Create a QShortcut for the XF86Back key
+        self.xf86back_shortcut = QShortcut(QKeySequence('Back'), self)
+        # Connect the shortcut to a function that emits an escape key press
+        self.xf86back_shortcut.activated.connect(lambda: self.fake_key_press(Qt.Key_Escape))
+
         webview = QWebEngineView()
         webview.settings().setAttribute(QWebEngineSettings.ShowScrollBars, False)
         webview.setContextMenuPolicy(Qt.NoContextMenu)
@@ -39,7 +44,17 @@ class MainWindow(QMainWindow):
         webpage = WebEnginePage(self, profile, webview)
         webpage.windowCloseRequested.connect(self.close)
         webview.setPage(webpage)
-        webview.load(QUrl("https://www.youtube.com/tv"))
+        # webview.load(QUrl("https://www.youtube.com/tv"))
+        webview.load(QUrl("https://duck.com"))
 
         self.setCentralWidget(webview)
 
+    def fake_key_press(self,
+                       key: Qt.Key,
+                       modifier: Qt.KeyboardModifier = Qt.NoModifier) -> None:
+        """Send a fake key event."""
+        press_evt = QKeyEvent(QEvent.KeyPress, key, modifier, 0, 0, 0)
+        release_evt = QKeyEvent(QEvent.KeyRelease, key, modifier,
+                                0, 0, 0)
+        QApplication.postEvent(self, press_evt)
+        QApplication.postEvent(self, release_evt)

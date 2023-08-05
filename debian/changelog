@@ -1,9 +1,5 @@
-yttv (0.4.1) alpha; urgency=medium
+yttv (0.4.2) alpha; urgency=medium
 
-  * set custom console handler for debugging
-
-  * add logging for javaScript Console Messages
-
-  * fix, quit on exit
+  * map XF86Back to Escape
 
  -- webyfy <info@webyfy.com>  Wed, 24 June 2023 12:47:03 +0530
