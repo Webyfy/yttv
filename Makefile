@@ -5,7 +5,7 @@ run:
 	python3 -m yttv
 
 deb: clean
-	fakeroot dpkg-buildpackage -b
+	fakeroot dpkg-buildpackage -us -uc -b
 
 pip:clean
 	python3 setup.py sdist bdist_wheel
