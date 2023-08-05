@@ -44,8 +44,7 @@ class MainWindow(QMainWindow):
         webpage = WebEnginePage(self, profile, webview)
         webpage.windowCloseRequested.connect(self.close)
         webview.setPage(webpage)
-        # webview.load(QUrl("https://www.youtube.com/tv"))
-        webview.load(QUrl("https://duck.com"))
+        webview.load(QUrl("https://www.youtube.com/tv"))
 
         self.setCentralWidget(webview)
 
