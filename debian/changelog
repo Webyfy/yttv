@@ -1,5 +1,7 @@
-yttv (0.4.2) alpha; urgency=medium
+yttv (0.4.3) alpha; urgency=medium
 
-  * map XF86Back to Escape
+  * Fix fake key press not focussing webview
 
- -- webyfy <info@webyfy.com>  Wed, 24 June 2023 12:47:03 +0530
+  * Fix segmentation fault in fake key press
+
+ -- webyfy <info@webyfy.com>  Mon, 7 Aug 2023 00:59:12 +0530
