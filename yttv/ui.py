@@ -1,5 +1,4 @@
 import logging
-from PySide2 import QtTest
 from PySide2.QtGui import QIcon, QKeySequence, QKeyEvent
 from PySide2.QtCore import QUrl, Qt, QEvent, QTimer
 from PySide2.QtWidgets import QMainWindow, QShortcut, QApplication

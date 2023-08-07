@@ -1,7 +1,7 @@
-yttv (0.4.3) alpha; urgency=medium
+yttv (0.4.4) alpha; urgency=medium
 
-  * Fix fake key press not focussing webview
+  * Remove profile info from icon image
 
-  * Fix segmentation fault in fake key press
+  * Remove QtTest from code
 
- -- webyfy <info@webyfy.com>  Mon, 7 Aug 2023 00:59:12 +0530
+ -- webyfy <info@webyfy.com>  Mon, 7 Aug 2023 11:37:13 +0530
