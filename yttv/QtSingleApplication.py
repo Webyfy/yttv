@@ -10,9 +10,9 @@ class QtSingleApplication(QApplication):
 
     messageReceived = QtCore.Signal()
 
-    def __init__(self, id, *argv):
+    def __init__(self, id):
 
-        super(QtSingleApplication, self).__init__(*argv)
+        super().__init__(['yttv', '--disable-seccomp-filter-sandbox'])
         self._id = id
         self._activationWindow = None
         self._activateOnMessage = False

@@ -1,7 +1,5 @@
-yttv (0.4.4) alpha; urgency=medium
+yttv (0.4.5) alpha; urgency=medium
 
-  * Remove profile info from icon image
-
-  * Remove QtTest from code
+  * Disable sandbox as a workaround for blank page
 
  -- webyfy <info@webyfy.com>  Mon, 7 Aug 2023 11:37:13 +0530
