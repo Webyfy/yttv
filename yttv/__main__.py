@@ -1,9 +1,9 @@
 import sys
-from PySide2.QtCore import QUrl
+from PySide2.QtCore import QUrl, Qt
 from PySide2.QtGui import QGuiApplication
 from PySide2.QtWidgets import (QApplication, QMainWindow)
-from PySide2.QtWebEngineWidgets import (QWebEngineView, 
-                                        QWebEngineProfile, QWebEnginePage)
+from PySide2.QtWebEngineWidgets import (QWebEngineView, QWebEngineProfile, 
+                                        QWebEnginePage, QWebEngineSettings)
 
 USER_AGENT = 'Roku/DVP-23.0 (23.0.0.99999-02)'
 YTTV_URL = QUrl('https://www.youtube.com/tv')
@@ -15,6 +15,8 @@ class YTTV(QMainWindow):
 
     def initUI(self):
         self.webEngineView = QWebEngineView(self)
+        self.webEngineView.settings().setAttribute(QWebEngineSettings.ShowScrollBars, False)
+        self.webEngineView.setContextMenuPolicy(Qt.NoContextMenu)
 
         profile = QWebEngineProfile.defaultProfile()
         profile.setHttpUserAgent(USER_AGENT)
