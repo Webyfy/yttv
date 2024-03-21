@@ -1,1 +1,1 @@
-from yawebview.webview import Window, start
+from yttv.yawebview.webview import Window, start
