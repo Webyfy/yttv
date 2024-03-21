@@ -9,9 +9,11 @@ from dataclasses import dataclass
 from typing import List
 import logging
 
+
 @dataclass
 class Options:
     user_agent: str | None = None
+    single_instance_mode: bool = False
 
 
 class Window:
@@ -38,12 +40,13 @@ class Window:
         self.icon_name = icon_name
         self.fallback_icon_files = fallback_icon_files
 
-class BrowserView(QMainWindow):
-    def __init__(self, window: Window, options: Options):
-        super(BrowserView, self).__init__()
-        self.initUI(window=window, options=options)
 
-    def initUI(self, window: Window, options: Options):
+class BrowserView(QMainWindow):
+    def __init__(self, window: Window, user_agent: str | None = None):
+        super(BrowserView, self).__init__()
+        self.initUI(window=window, user_agent=user_agent)
+
+    def initUI(self, window: Window, user_agent: str | None):
         self.webEngineView = QWebEngineView(self)
         self.webEngineView.settings().setAttribute(
             QWebEngineSettings.ShowScrollBars, window.show_scrollbars)
@@ -51,8 +54,8 @@ class BrowserView(QMainWindow):
             self.webEngineView.setContextMenuPolicy(Qt.NoContextMenu)
 
         profile = QWebEngineProfile.defaultProfile()
-        if options.user_agent:
-            profile.setHttpUserAgent(options.user_agent)
+        if user_agent:
+            profile.setHttpUserAgent(user_agent)
         self.webEngineView.page().profile = profile
 
         if window.set_title_from_page:
@@ -91,11 +94,9 @@ class BrowserView(QMainWindow):
             self.setWindowIcon(icon)
 
 
-def start(user_agent: str | None = None):
+def start(options: Options = Options()):
     args = sys.argv
     args.append('--disable-seccomp-filter-sandbox')
     app = QApplication(args)
-    _ = BrowserView(Window._instance, Options(
-        user_agent=user_agent,
-    ))
+    _ = BrowserView(Window._instance, user_agent=options.user_agent)
     sys.exit(app.exec_())
