@@ -6,13 +6,13 @@ from PySide2.QtWebEngineWidgets import (QWebEngineView, QWebEngineProfile,
                                         QWebEnginePage, QWebEngineSettings)
 
 from dataclasses import dataclass
-from typing import List
+from typing import List, Optional
 import logging
 
 
 @dataclass
 class Options:
-    user_agent: str | None = None
+    user_agent: Optional[str] = None
     single_instance_mode: bool = False
 
 
@@ -42,11 +42,11 @@ class Window:
 
 
 class BrowserView(QMainWindow):
-    def __init__(self, window: Window, user_agent: str | None = None):
+    def __init__(self, window: Window, user_agent: Optional[str] = None):
         super(BrowserView, self).__init__()
         self.initUI(window=window, user_agent=user_agent)
 
-    def initUI(self, window: Window, user_agent: str | None):
+    def initUI(self, window: Window, user_agent: Optional[str]):
         self.webEngineView = QWebEngineView(self)
         self.webEngineView.settings().setAttribute(
             QWebEngineSettings.ShowScrollBars, window.show_scrollbars)
