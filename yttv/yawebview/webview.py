@@ -27,7 +27,8 @@ class Window:
         return cls._instance
 
     def __init__(self, title: str, url: str, scrollbars: bool = True,
-                 context_menu: bool = True, title_from_page: bool = True):
+                 context_menu: bool = True, title_from_page: bool = True,
+                 allow_scripts_to_close:bool = False):
         self.title = title
         self.url = url
         self.show_scrollbars = scrollbars
@@ -35,6 +36,7 @@ class Window:
         self.set_title_from_page = title_from_page
         # self.width =
         # self.height
+        self.allow_scripts_to_close = allow_scripts_to_close
         self.icon_set = False
         self.keymappings : Dict[str, str] = {}
 
@@ -46,7 +48,24 @@ class Window:
     def add_keymapping(self, src_key_sequence: str, dest_key_sequence: str):
         self.keymappings[src_key_sequence] = dest_key_sequence
 
+class WebEnginePage(QWebEnginePage):
+    WINDOW_CLOSE_ERROR = "Scripts may close only the windows that were opened by "
 
+    def __init__(self, profile, parent=None):
+        super().__init__(profile, parent)
+    
+    def javaScriptConsoleMessage(self, level, message, lineNumber, sourceID):  
+        if (level == QWebEnginePage.JavaScriptConsoleMessageLevel.WarningMessageLevel) and \
+            WebEnginePage.WINDOW_CLOSE_ERROR.casefold() in message.casefold():
+            self.windowCloseRequested.emit()
+            return
+
+        if (level == QWebEnginePage.JavaScriptConsoleMessageLevel.InfoMessageLevel):
+            logging.info(f"js: {message}")
+        elif (level == QWebEnginePage.JavaScriptConsoleMessageLevel.WarningMessageLevel):
+            logging.warn(f"js: {message}")
+        else: # QWebEnginePage.JavaScriptConsoleMessageLevel.ErrorMessageLevel
+            logging.error(f"js: {message}")
 
 class BrowserView(QMainWindow):
     def __init__(self, window: Window, user_agent: Optional[str] = None):
@@ -69,22 +88,25 @@ class BrowserView(QMainWindow):
             shortcut.activated.connect(lambda: self.fake_key_press(dest_q_key_seq[0]))
 
         self.webEngineView = QWebEngineView(self)
+        profile = QWebEngineProfile.defaultProfile()
+        if user_agent:
+            profile.setHttpUserAgent(user_agent)
+        page = WebEnginePage(profile=profile,
+                             parent=self.webEngineView)
+        if window.set_title_from_page:
+            page.titleChanged.connect(self.setWindowTitle)
+        if window.allow_scripts_to_close:
+            page.windowCloseRequested.connect(self.close)
+        self.webEngineView.setPage(page)
+        
         self.webEngineView.settings().setAttribute(
             QWebEngineSettings.ShowScrollBars, window.show_scrollbars)
         if window.disable_context_menu:
             self.webEngineView.setContextMenuPolicy(Qt.NoContextMenu)
 
-        profile = QWebEngineProfile.defaultProfile()
-        if user_agent:
-            profile.setHttpUserAgent(user_agent)
-        self.webEngineView.page().profile = profile
-
-        if window.set_title_from_page:
-            self.webEngineView.page().titleChanged.connect(self.setWindowTitle)
         self.webEngineView.setUrl(QUrl(window.url))
-
         self.setCentralWidget(self.webEngineView)
-
+        
         self.setWindowTitle(window.title)
         if window.icon_set:
             self.set_icon(window.icon_name, window.fallback_icon_files)

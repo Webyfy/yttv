@@ -32,7 +32,7 @@ def main():
     args = parser.parse_args()
     intialize_logging(args.debug)
     window = yawebview.Window(
-        'YouTube on TV', YTTV_URL, scrollbars=False, context_menu=False)
+        'YouTube on TV', YTTV_URL, scrollbars=False, context_menu=False, allow_scripts_to_close=True)
 
     file_manager = ExitStack()
     atexit.register(file_manager.close)
