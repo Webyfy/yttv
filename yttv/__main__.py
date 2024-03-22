@@ -37,8 +37,10 @@ def main():
     file_manager = ExitStack()
     atexit.register(file_manager.close)
     icon_file = file_manager.enter_context(resources.path("yttv.icons", "com.webyfy.yttv-48x48.png"))
-    
     window.set_icon("com.webyfy.yttv", [str(icon_file),])
+
+    window.add_keymapping('Back', 'Escape')
+
     yawebview.start(options=yawebview.Options(
         user_agent=USER_AGENT,
         single_instance_mode=True,

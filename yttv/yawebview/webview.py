@@ -1,7 +1,7 @@
 import sys
-from PySide2.QtCore import QUrl, Qt
-from PySide2.QtGui import QGuiApplication, QIcon, QPixmap
-from PySide2.QtWidgets import (QApplication, QMainWindow)
+from PySide2.QtCore import QUrl, Qt, QEvent
+from PySide2.QtGui import QGuiApplication, QIcon, QPixmap, QKeySequence, QKeyEvent
+from PySide2.QtWidgets import (QApplication, QMainWindow, QShortcut)
 from PySide2.QtWebEngineWidgets import (QWebEngineView, QWebEngineProfile,
                                         QWebEnginePage, QWebEngineSettings)
 
@@ -36,20 +36,38 @@ class Window:
         # self.width =
         # self.height
         self.icon_set = False
+        self.keymappings : Dict[str, str] = {}
 
     def set_icon(self, icon_name: str, fallback_icon_files: List[str] = []):
         self.icon_set = True
         self.icon_name = icon_name
         self.fallback_icon_files = fallback_icon_files
 
+    def add_keymapping(self, src_key_sequence: str, dest_key_sequence: str):
+        self.keymappings[src_key_sequence] = dest_key_sequence
+
+
 
 class BrowserView(QMainWindow):
     def __init__(self, window: Window, user_agent: Optional[str] = None):
-        # super(BrowserView, self).__init__()
         super().__init__()
         self.initUI(window=window, user_agent=user_agent)
 
     def initUI(self, window: Window, user_agent: Optional[str]):
+        for src_seq in window.keymappings.keys():
+            src_q_key_seq = QKeySequence(src_seq)
+            if src_q_key_seq.toString() == "":
+                logging.warning(f"Invalid key sequence '{src_seq}'")
+                continue
+            dest_seq = window.keymappings[src_seq]
+            dest_q_key_seq =QKeySequence(dest_seq)
+            if dest_q_key_seq.toString() == "":
+                logging.warning(f"Invalid key sequence '{dest_seq}'")
+                continue
+            shortcut = QShortcut(src_q_key_seq, self)
+            # Hacky solution, but works for my requirements
+            shortcut.activated.connect(lambda: self.fake_key_press(dest_q_key_seq[0]))
+
         self.webEngineView = QWebEngineView(self)
         self.webEngineView.settings().setAttribute(
             QWebEngineSettings.ShowScrollBars, window.show_scrollbars)
@@ -73,6 +91,34 @@ class BrowserView(QMainWindow):
         self.resize(QGuiApplication.primaryScreen().
                     availableGeometry().size() * 0.7)
         self.center()
+
+    # shamelessly copy/pasted from qute browser
+    def fake_key_press(self,
+                       key: Qt.Key,
+                       modifier: Qt.KeyboardModifier = Qt.KeyboardModifier.NoModifier) -> None:
+        """Send a fake key event."""
+        press_evt = QKeyEvent(QEvent.Type.KeyPress, key, modifier, 0, 0, 0)
+        release_evt = QKeyEvent(QEvent.Type.KeyRelease, key, modifier,
+                                0, 0, 0)
+        self.send_event(press_evt)
+        self.send_event(release_evt)
+
+    def send_event(self, evt: QEvent) -> None:
+        """Send the given event to the underlying widget.
+
+        The event will be sent via QApplication.postEvent.
+        Note that a posted event must not be re-used in any way!
+        """
+        # This only gives us some mild protection against re-using events, but
+        # it's certainly better than a segfault.
+        if getattr(evt, 'posted', False):
+            logging.error("Can't re-use an event which was already "
+                                    "posted!")
+            return
+
+        recipient = self.webEngineView.focusProxy()
+        evt.posted = True  # type: ignore[attr-defined]
+        QApplication.postEvent(recipient, evt)
 
     def center(self):
         qr = self.frameGeometry()
