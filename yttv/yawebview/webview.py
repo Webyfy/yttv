@@ -8,7 +8,9 @@ from PySide2.QtWebEngineWidgets import (QWebEngineView, QWebEngineProfile,
 from dataclasses import dataclass
 from typing import List, Optional
 import logging
-
+from os import path
+from yttv.yawebview.QtSingleApplication import QtSingleApplication
+from yttv.yawebview import sighandler
 
 @dataclass
 class Options:
@@ -43,7 +45,8 @@ class Window:
 
 class BrowserView(QMainWindow):
     def __init__(self, window: Window, user_agent: Optional[str] = None):
-        super(BrowserView, self).__init__()
+        # super(BrowserView, self).__init__()
+        super().__init__()
         self.initUI(window=window, user_agent=user_agent)
 
     def initUI(self, window: Window, user_agent: Optional[str]):
@@ -70,7 +73,6 @@ class BrowserView(QMainWindow):
         self.resize(QGuiApplication.primaryScreen().
                     availableGeometry().size() * 0.7)
         self.center()
-        self.show()
 
     def center(self):
         qr = self.frameGeometry()
@@ -97,6 +99,18 @@ class BrowserView(QMainWindow):
 def start(options: Options = Options()):
     args = sys.argv
     args.append('--disable-seccomp-filter-sandbox')
-    app = QApplication(args)
-    _ = BrowserView(Window._instance, user_agent=options.user_agent)
+    if options.single_instance_mode:
+        id = path.abspath(path.realpath(__file__)).replace(path.sep, "_")
+        app = QtSingleApplication(id, args)
+        sighandler.crash_handler(app)
+        if app.isRunning():
+            logging.info("Another instance is already running")
+            sys.exit(0)
+    else:
+        app = QApplication(args)
+        sighandler.crash_handler(app)
+    w = BrowserView(Window._instance, user_agent=options.user_agent)
+    w.show()
+    if options.single_instance_mode:
+        app.setActivationWindow(w)
     sys.exit(app.exec_())

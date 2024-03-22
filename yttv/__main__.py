@@ -1,4 +1,5 @@
 import yttv.yawebview as yawebview
+import logging
 try:
     from importlib import resources
 except ImportError:
@@ -9,8 +10,23 @@ import atexit
 USER_AGENT = 'Roku/DVP-23.0 (23.0.0.99999-02)'
 YTTV_URL = 'https://www.youtube.com/tv'
 
+def intialize_logging(debug:bool =False):
+    """
+    Initialize the logging framework
+    """
+    # Configure logging.
+    root_logger = logging.getLogger()
+    log_formatter = logging.Formatter(
+        '%(asctime)s [%(levelname)s]: %(message)s')
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(log_formatter)
+    root_logger.addHandler(console_handler)
+    if debug:
+        root_logger.setLevel(logging.DEBUG)
+
 
 def main():
+    intialize_logging(debug=True)
     window = yawebview.Window(
         'YouTube on TV', YTTV_URL, scrollbars=False, context_menu=False)
 
