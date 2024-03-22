@@ -6,6 +6,7 @@ except ImportError:
     import importlib_resources as resources
 from contextlib import ExitStack
 import atexit
+import argparse
 
 USER_AGENT = 'Roku/DVP-23.0 (23.0.0.99999-02)'
 YTTV_URL = 'https://www.youtube.com/tv'
@@ -26,7 +27,10 @@ def intialize_logging(debug:bool =False):
 
 
 def main():
-    intialize_logging(debug=True)
+    parser = argparse.ArgumentParser(prog='yttv', description='YouTube for 10 foot UI with D-pad navigation.')
+    parser.add_argument('-d', '--debug', help='start YouTube on TV in debug mode', action='store_true')
+    args = parser.parse_args()
+    intialize_logging(args.debug)
     window = yawebview.Window(
         'YouTube on TV', YTTV_URL, scrollbars=False, context_menu=False)
 
