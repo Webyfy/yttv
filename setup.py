@@ -17,5 +17,6 @@ setup(
     author='Webyfy',
     author_email='info@webyfy.com',
     url='https://gitlab.com/webyfy/iot/e-gurukul/yttv',
-    packages=find_packages()
+    packages=find_packages(),
+    entry_points={'console_scripts': ['yttv = yttv.__main__:main']},
 )

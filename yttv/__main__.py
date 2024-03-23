@@ -44,6 +44,7 @@ def main():
     yawebview.start(options=yawebview.Options(
         user_agent=USER_AGENT,
         single_instance_mode=True,
+        app_id="com.webyfy.yttv"
     ))
 
 if __name__ == "__main__":

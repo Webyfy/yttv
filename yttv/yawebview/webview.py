@@ -8,7 +8,6 @@ from PySide2.QtWebEngineWidgets import (QWebEngineView, QWebEngineProfile,
 from dataclasses import dataclass
 from typing import List, Optional
 import logging
-from os import path
 from yttv.yawebview.QtSingleApplication import QtSingleApplication
 from yttv.yawebview import sighandler
 
@@ -16,7 +15,7 @@ from yttv.yawebview import sighandler
 class Options:
     user_agent: Optional[str] = None
     single_instance_mode: bool = False
-
+    app_id: str = ""
 
 class Window:
     _instance = None
@@ -168,7 +167,10 @@ def start(options: Options = Options()):
     args = sys.argv
     args.append('--disable-seccomp-filter-sandbox')
     if options.single_instance_mode:
-        id = path.abspath(path.realpath(__file__)).replace(path.sep, "_")
+        id = options.app_id
+        if len(id) < 4:
+            logging.error("app id length < 4")
+            sys.exit(1)
         app = QtSingleApplication(id, args)
         sighandler.crash_handler(app)
         if app.isRunning():
