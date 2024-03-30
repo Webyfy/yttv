@@ -8,6 +8,7 @@ portable: clean
 	pyinstaller app.py --name yttv -p yttv/icons \
 		--hiddenimport=yttv.icons \
 		--add-data "yttv/icons/com.webyfy.yttv-48x48.png":yttv/icons
+	rm -f dist/yttv/_internal/libstdc++.so.6
 
 appimage: portable
 	cp yttv/icons/com.webyfy.yttv-48x48.png dist/com.webyfy.yttv.png
