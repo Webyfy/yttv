@@ -24,7 +24,7 @@ build_job:
     - echo "APPIMAGE_FILE=${APPIMAGE_FILE}" >> build.env
   artifacts:
     paths:
-      - ./dist/*.AppImage
+      - ./*.AppImage
     reports:
       dotenv: build.env
   only:
