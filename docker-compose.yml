@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+    yttv_appimage:
+        build: .
+        container_name: yttv_appimage_c
+        command: make appimage
+        volumes:
+            - .:/app
+        working_dir: /app 
