@@ -166,3 +166,5 @@ dmypy.json
 cython_debug/
 
 pyinstaller2appimage
+*.[Aa]pp[Ii]mage
+

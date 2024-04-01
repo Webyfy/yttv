@@ -10,7 +10,7 @@ with open(path.join(_ROOT, 'README.md')) as f:
 
 setup(
     name='yttv',
-    version='0.1.3',
+    version='0.3.9',
     description='YouTube on TV',
     long_description=long_description,
     long_description_content_type="text/markdown",
