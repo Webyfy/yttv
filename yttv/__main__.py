@@ -1,10 +1,6 @@
 import yttv.yawebview as yawebview
 import logging
-try:
-    from importlib import resources
-except ImportError:
-    import importlib_resources as resources
-from contextlib import ExitStack
+from yttv import utility
 import atexit
 import argparse
 
@@ -34,9 +30,7 @@ def main():
     window = yawebview.Window(
         'YouTube on TV', YTTV_URL, scrollbars=False, context_menu=False, allow_scripts_to_close=True)
 
-    file_manager = ExitStack()
-    atexit.register(file_manager.close)
-    icon_file = file_manager.enter_context(resources.path("yttv.icons", "com.webyfy.yttv-48x48.png"))
+    icon_file = utility.get_icon_path("com.webyfy.yttv.png")
     window.set_icon("com.webyfy.yttv", [str(icon_file),])
 
     window.add_keymapping('Back', 'Escape')

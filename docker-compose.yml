@@ -7,3 +7,11 @@ services:
         volumes:
             - .:/app
         working_dir: /app 
+
+    yttv_deb:
+        build: .
+        container_name: yttv_deb_c
+        command: make deb
+        volumes:
+            - .:/app
+        working_dir: /app 

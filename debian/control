@@ -1,0 +1,15 @@
+Source: yttv
+Section: web
+Priority: optional
+Maintainer: Webyfy <info@webyfy.com>
+Build-Depends: debhelper (>= 10), python3, dh-virtualenv (>= 1.0)
+Standards-Version: 3.9.6
+
+Package: yttv
+Architecture: all
+Pre-Depends: dpkg (>= 1.16.1), python3 (>= 3.8), ${misc:Pre-Depends}
+Depends: python3-pyside2.qtwebenginewidgets, ${python3:Depends}, ${misc:Depends}
+Description: YouTube on TV
+ YouTube for 10 foot UI with D-pad navigation. It is a Site Specific Browser 
+ that points to https://www.youtube.com/tv with custom user-agent to avoid 
+ redirection.
