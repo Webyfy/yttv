@@ -11,11 +11,13 @@ import logging
 from yttv.yawebview.QtSingleApplication import QtSingleApplication
 from yttv.yawebview import sighandler
 
+
 @dataclass
 class Options:
     user_agent: Optional[str] = None
     single_instance_mode: bool = False
     app_id: str = ""
+
 
 class Window:
     _instance = None
@@ -27,7 +29,7 @@ class Window:
 
     def __init__(self, title: str, url: str, scrollbars: bool = True,
                  context_menu: bool = True, title_from_page: bool = True,
-                 allow_scripts_to_close:bool = False):
+                 allow_scripts_to_close: bool = False):
         self.title = title
         self.url = url
         self.show_scrollbars = scrollbars
@@ -37,7 +39,7 @@ class Window:
         # self.height
         self.allow_scripts_to_close = allow_scripts_to_close
         self.icon_set = False
-        self.keymappings : Dict[str, str] = {}
+        self.keymappings: Dict[str, str] = {}
 
     def set_icon(self, icon_name: str, fallback_icon_files: List[str] = []):
         self.icon_set = True
@@ -47,15 +49,16 @@ class Window:
     def add_keymapping(self, src_key_sequence: str, dest_key_sequence: str):
         self.keymappings[src_key_sequence] = dest_key_sequence
 
+
 class WebEnginePage(QWebEnginePage):
     WINDOW_CLOSE_ERROR = "Scripts may close only the windows that were opened by "
 
     def __init__(self, profile, parent=None):
         super().__init__(profile, parent)
-    
-    def javaScriptConsoleMessage(self, level, message, lineNumber, sourceID):  
+
+    def javaScriptConsoleMessage(self, level, message, lineNumber, sourceID):
         if (level == QWebEnginePage.JavaScriptConsoleMessageLevel.WarningMessageLevel) and \
-            WebEnginePage.WINDOW_CLOSE_ERROR.casefold() in message.casefold():
+                WebEnginePage.WINDOW_CLOSE_ERROR.casefold() in message.casefold():
             self.windowCloseRequested.emit()
             return
 
@@ -63,8 +66,9 @@ class WebEnginePage(QWebEnginePage):
             logging.info(f"js: {message}")
         elif (level == QWebEnginePage.JavaScriptConsoleMessageLevel.WarningMessageLevel):
             logging.warn(f"js: {message}")
-        else: # QWebEnginePage.JavaScriptConsoleMessageLevel.ErrorMessageLevel
+        else:  # QWebEnginePage.JavaScriptConsoleMessageLevel.ErrorMessageLevel
             logging.error(f"js: {message}")
+
 
 class BrowserView(QMainWindow):
     def __init__(self, window: Window, user_agent: Optional[str] = None):
@@ -78,13 +82,14 @@ class BrowserView(QMainWindow):
                 logging.warning(f"Invalid key sequence '{src_seq}'")
                 continue
             dest_seq = window.keymappings[src_seq]
-            dest_q_key_seq =QKeySequence(dest_seq)
+            dest_q_key_seq = QKeySequence(dest_seq)
             if dest_q_key_seq.toString() == "":
                 logging.warning(f"Invalid key sequence '{dest_seq}'")
                 continue
             shortcut = QShortcut(src_q_key_seq, self)
             # Hacky solution, but works for my requirements
-            shortcut.activated.connect(lambda: self.fake_key_press(dest_q_key_seq[0]))
+            shortcut.activated.connect(
+                lambda: self.fake_key_press(dest_q_key_seq[0]))
 
         self.webEngineView = QWebEngineView(self)
         profile = QWebEngineProfile.defaultProfile()
@@ -97,7 +102,7 @@ class BrowserView(QMainWindow):
         if window.allow_scripts_to_close:
             page.windowCloseRequested.connect(self.close)
         self.webEngineView.setPage(page)
-        
+
         self.webEngineView.settings().setAttribute(
             QWebEngineSettings.ShowScrollBars, window.show_scrollbars)
         if window.disable_context_menu:
@@ -105,7 +110,7 @@ class BrowserView(QMainWindow):
 
         self.webEngineView.setUrl(QUrl(window.url))
         self.setCentralWidget(self.webEngineView)
-        
+
         self.setWindowTitle(window.title)
         if window.icon_set:
             self.set_icon(window.icon_name, window.fallback_icon_files)
@@ -134,7 +139,7 @@ class BrowserView(QMainWindow):
         # it's certainly better than a segfault.
         if getattr(evt, 'posted', False):
             logging.error("Can't re-use an event which was already "
-                                    "posted!")
+                          "posted!")
             return
 
         recipient = self.webEngineView.focusProxy()

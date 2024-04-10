@@ -7,9 +7,12 @@ from PySide2.QtNetwork import QLocalSocket, QLocalServer
 from PySide2.QtCore import QTextStream, Qt, QEventLoop, QCoreApplication
 
 # from https://github.com/qutebrowser/qutebrowser/blob/c073412b49002ff75bf67fac1c3e59560135a51b/qutebrowser/mainwindow/mainwindow.py#L70
-def raise_window(window:QMainWindow):
+
+
+def raise_window(window: QMainWindow):
     """Raise the given MainWindow object."""
-    window.setWindowState(window.windowState() & ~Qt.WindowState.WindowMinimized)
+    window.setWindowState(window.windowState() & ~
+                          Qt.WindowState.WindowMinimized)
     window.setWindowState(window.windowState() | Qt.WindowState.WindowActive)
     window.raise_()
     # WORKAROUND for https://bugreports.qt.io/browse/QTBUG-69568
@@ -17,10 +20,11 @@ def raise_window(window:QMainWindow):
         QEventLoop.ProcessEventsFlag.ExcludeUserInputEvents | QEventLoop.ProcessEventsFlag.ExcludeSocketNotifiers)
 
     # if sip.isdeleted(window):
-        # Could be deleted by the events run above
-        # return
+    # Could be deleted by the events run above
+    # return
 
     window.activateWindow()
+
 
 class QtSingleApplication(QApplication):
 
@@ -60,7 +64,7 @@ class QtSingleApplication(QApplication):
     def activationWindow(self):
         return self._activationWindow
 
-    def setActivationWindow(self, activationWindow, activateOnMessage = True):
+    def setActivationWindow(self, activationWindow, activateOnMessage=True):
         self._activationWindow = activationWindow
         self._activateOnMessage = activateOnMessage
 
@@ -91,5 +95,6 @@ class QtSingleApplication(QApplication):
     def _onReadyRead(self):
         while True:
             msg = self._inStream.readLine()
-            if not msg: break
+            if not msg:
+                break
             self.messageReceived.emit(msg)

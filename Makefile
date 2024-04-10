@@ -23,15 +23,18 @@ gen-reqs:
 pip: clean
 	python3 setup.py sdist bdist_wheel
 
-version := $(shell cat setup.py | grep version | cut -d'=' -f 2 | cut -d"'" -f 2)
+version := $(shell cat yttv/__init__.py | grep YTTV_VERSION | cut -d'=' -f 2 | cut -d"'" -f 2)
 codename := $(shell lsb_release -a 2>/dev/null | grep Codename | cut -f 2)
 
-deb: clean
+deb: man
 	chmod -x debian/*.install debian/*.links
 	dpkg-buildpackage -us -uc
 	mv "../yttv_$(version)_all.deb" "./yttv_$(version)+$(codename)_all.deb"
 
+man: clean
+	python3 setup.py build_manpages
+
 clean:
 	git clean -fdX --exclude="!pyinstaller2appimage"
 
-.PHONY: run debug clean appimage deb gen-reqs pip test
+.PHONY: run debug clean appimage deb gen-reqs pip test man

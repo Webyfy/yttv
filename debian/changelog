@@ -1,5 +1,5 @@
-yttv (0.3.9) unstable; urgency=low
+yttv (0.4.0) unstable; urgency=low
 
-  * b'7da12fb Fix missing appimage file in gitlab-ci\n'
+  * Implement manpage generation
 
- -- Webyfy <info@webyfy.com>  Tue, 02 Apr 2024 18:34:58 +0000
+ -- Webyfy <info@webyfy.com>  Wed, 10 Apr 2024 09:15:00 +0000

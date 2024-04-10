@@ -1,13 +1,14 @@
 import yttv.yawebview as yawebview
 import logging
-from yttv import utility
+from yttv import utility, YTTV_VERSION
 import atexit
 import argparse
 
 USER_AGENT = 'Roku/DVP-23.0 (23.0.0.99999-02)'
 YTTV_URL = 'https://www.youtube.com/tv'
 
-def intialize_logging(debug:bool =False):
+
+def intialize_logging(debug: bool = False):
     """
     Initialize the logging framework
     """
@@ -22,9 +23,18 @@ def intialize_logging(debug:bool =False):
         root_logger.setLevel(logging.DEBUG)
 
 
+def get_parser():
+    parser = argparse.ArgumentParser(
+        prog='yttv', description='YouTube for 10 foot UI with D-pad navigation.')
+    parser.add_argument(
+        '-d', '--debug', help='start YouTube on TV in debug mode', action='store_true')
+    parser.add_argument('--version', action='version',
+                        version='%(prog)s ' + YTTV_VERSION)
+    return parser
+
+
 def main():
-    parser = argparse.ArgumentParser(prog='yttv', description='YouTube for 10 foot UI with D-pad navigation.')
-    parser.add_argument('-d', '--debug', help='start YouTube on TV in debug mode', action='store_true')
+    parser = get_parser()
     args = parser.parse_args()
     intialize_logging(args.debug)
     window = yawebview.Window(
@@ -40,6 +50,7 @@ def main():
         single_instance_mode=True,
         app_id="com.webyfy.yttv"
     ))
+
 
 if __name__ == "__main__":
     main()

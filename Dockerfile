@@ -8,4 +8,5 @@ RUN apt update && apt install -y software-properties-common && \
     git make binutils wget dh-virtualenv dpkg-dev debhelper && \
     apt install -y --no-install-recommends python3-pip
 RUN pip3 install pyinstaller
+RUN pip3 install argparse-manpage
 RUN git config --global --add safe.directory /app

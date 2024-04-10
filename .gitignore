@@ -178,3 +178,4 @@ debian/*
 !debian/*.install
 !debian/*.links
 !debian/*.triggers
+!debian/*.manpages

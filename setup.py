@@ -2,11 +2,15 @@
 
 from setuptools import setup, find_packages
 from os import path, walk
+from build_manpages import build_manpages, get_build_py_cmd, get_install_cmd
+
+from yttv import YTTV_VERSION
 
 _ROOT = path.abspath(path.dirname(__file__))
 
 with open(path.join(_ROOT, 'README.md')) as f:
     long_description = f.read()
+
 
 def __package_files(directory):
     """
@@ -18,6 +22,7 @@ def __package_files(directory):
             paths.append(path.join('..', dirpath, filename))
     return paths
 
+
 def __package_data():
     """
     Return a list of package data.
@@ -26,9 +31,10 @@ def __package_data():
     data.extend(__package_files('yttv/icons'))
     return data
 
+
 setup(
     name='yttv',
-    version='0.3.9',
+    version=YTTV_VERSION,
     description='YouTube on TV',
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -50,5 +56,12 @@ setup(
         'Programming Language :: Python :: 3',
         'Topic :: Internet',
         'Topic :: Multimedia :: Video'
-    ]
+    ],
+    cmdclass={
+        'build_manpages': build_manpages,
+        # Re-define build_py and install commands so the manual pages
+        # are automatically re-generated and installed
+        'build_py': get_build_py_cmd(),
+        'install': get_install_cmd(),
+    }
 )
