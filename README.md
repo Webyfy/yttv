@@ -7,6 +7,12 @@ YouTube for 10 foot UI with D-pad navigation. It is a Site Specific Browser that
 Install prerequisites (Ubuntu)
 ```shell
 sudo apt install python3-pyside2.qtwebenginewidgets
+
+# Only for Ubuntu below 22.04(jammy)
+sudo apt install -y software-properties-common && sudo add-apt-repository ppa:jyrki-pulliainen/dh-virtualenv -y
+
+sudo apt install -y --no-install-recommends python3-pip
+pip3 install -U pyinstaller argparse-manpage
 ```
 
 Clone & Run
