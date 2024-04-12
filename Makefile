@@ -23,7 +23,7 @@ gen-reqs:
 pip: clean
 	python3 setup.py sdist bdist_wheel
 
-version := $(shell cat yttv/__init__.py | grep YTTV_VERSION | cut -d'=' -f 2 | cut -d"'" -f 2)
+version := $(shell cat yttv/__init__.py | grep YTTV_VERSION | cut -d'=' -f 2 | cut -d'"' -f 2)
 codename := $(shell lsb_release -a 2>/dev/null | grep Codename | cut -f 2)
 
 deb: man

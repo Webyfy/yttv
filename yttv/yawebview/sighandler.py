@@ -1,5 +1,6 @@
 import signal
 import socket
+
 from PySide2 import QtCore
 from PySide2.QtNetwork import QAbstractSocket
 from PySide2.QtWidgets import QApplication
@@ -44,14 +45,14 @@ def set_termination_signals_handler(signal_handler):
     # Handle termination signals to ensure clean exit
     # even if the process crashes
     signal.signal(signal.SIGHUP, signal_handler)  # 1
-    signal.signal(signal.SIGINT,  signal_handler)  # 2
+    signal.signal(signal.SIGINT, signal_handler)  # 2
     signal.signal(signal.SIGQUIT, signal_handler)  # 3
-    signal.signal(signal.SIGILL,  signal_handler)  # 4
+    signal.signal(signal.SIGILL, signal_handler)  # 4
     signal.signal(signal.SIGABRT, signal_handler)  # 6
-    signal.signal(signal.SIGFPE,  signal_handler)  # 8
-    signal.signal(signal.SIGBUS,  signal_handler)  # 10
+    signal.signal(signal.SIGFPE, signal_handler)  # 8
+    signal.signal(signal.SIGBUS, signal_handler)  # 10
     signal.signal(signal.SIGSEGV, signal_handler)  # 11
-    signal.signal(signal.SIGSYS,  signal_handler)  # 12
+    signal.signal(signal.SIGSYS, signal_handler)  # 12
     signal.signal(signal.SIGPIPE, signal_handler)  # 13
     signal.signal(signal.SIGALRM, signal_handler)  # 14
     signal.signal(signal.SIGTERM, signal_handler)  # 15
@@ -62,4 +63,5 @@ def set_termination_signals_handler(signal_handler):
 def crash_handler(app: QApplication):
     SignalWakeupHandler(app)
     set_termination_signals_handler(
-        lambda signum, _: QtCore.QTimer.singleShot(10,  app.quit))
+        lambda signum, _: QtCore.QTimer.singleShot(10, app.quit)
+    )

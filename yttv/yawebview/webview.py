@@ -1,15 +1,20 @@
-import sys
-from PySide2.QtCore import QUrl, Qt, QEvent
-from PySide2.QtGui import QGuiApplication, QIcon, QPixmap, QKeySequence, QKeyEvent
-from PySide2.QtWidgets import (QApplication, QMainWindow, QShortcut)
-from PySide2.QtWebEngineWidgets import (QWebEngineView, QWebEngineProfile,
-                                        QWebEnginePage, QWebEngineSettings)
-
-from dataclasses import dataclass
-from typing import List, Optional
 import logging
-from yttv.yawebview.QtSingleApplication import QtSingleApplication
+import sys
+from dataclasses import dataclass
+from typing import Dict, List, Optional
+
+from PySide2.QtCore import QEvent, Qt, QUrl
+from PySide2.QtGui import QGuiApplication, QIcon, QKeyEvent, QKeySequence, QPixmap
+from PySide2.QtWebEngineWidgets import (
+    QWebEnginePage,
+    QWebEngineProfile,
+    QWebEngineSettings,
+    QWebEngineView,
+)
+from PySide2.QtWidgets import QApplication, QMainWindow, QShortcut
+
 from yttv.yawebview import sighandler
+from yttv.yawebview.QtSingleApplication import QtSingleApplication
 
 
 @dataclass
@@ -27,9 +32,15 @@ class Window:
             cls._instance = super(Window, cls).__new__(cls)
         return cls._instance
 
-    def __init__(self, title: str, url: str, scrollbars: bool = True,
-                 context_menu: bool = True, title_from_page: bool = True,
-                 allow_scripts_to_close: bool = False):
+    def __init__(
+        self,
+        title: str,
+        url: str,
+        scrollbars: bool = True,
+        context_menu: bool = True,
+        title_from_page: bool = True,
+        allow_scripts_to_close: bool = False,
+    ):
         self.title = title
         self.url = url
         self.show_scrollbars = scrollbars
@@ -57,14 +68,15 @@ class WebEnginePage(QWebEnginePage):
         super().__init__(profile, parent)
 
     def javaScriptConsoleMessage(self, level, message, lineNumber, sourceID):
-        if (level == QWebEnginePage.JavaScriptConsoleMessageLevel.WarningMessageLevel) and \
-                WebEnginePage.WINDOW_CLOSE_ERROR.casefold() in message.casefold():
+        if (
+            level == QWebEnginePage.JavaScriptConsoleMessageLevel.WarningMessageLevel
+        ) and WebEnginePage.WINDOW_CLOSE_ERROR.casefold() in message.casefold():
             self.windowCloseRequested.emit()
             return
 
-        if (level == QWebEnginePage.JavaScriptConsoleMessageLevel.InfoMessageLevel):
+        if level == QWebEnginePage.JavaScriptConsoleMessageLevel.InfoMessageLevel:
             logging.info(f"js: {message}")
-        elif (level == QWebEnginePage.JavaScriptConsoleMessageLevel.WarningMessageLevel):
+        elif level == QWebEnginePage.JavaScriptConsoleMessageLevel.WarningMessageLevel:
             logging.warn(f"js: {message}")
         else:  # QWebEnginePage.JavaScriptConsoleMessageLevel.ErrorMessageLevel
             logging.error(f"js: {message}")
@@ -88,15 +100,13 @@ class BrowserView(QMainWindow):
                 continue
             shortcut = QShortcut(src_q_key_seq, self)
             # Hacky solution, but works for my requirements
-            shortcut.activated.connect(
-                lambda: self.fake_key_press(dest_q_key_seq[0]))
+            shortcut.activated.connect(lambda: self.fake_key_press(dest_q_key_seq[0]))
 
         self.webEngineView = QWebEngineView(self)
         profile = QWebEngineProfile.defaultProfile()
         if user_agent:
             profile.setHttpUserAgent(user_agent)
-        page = WebEnginePage(profile=profile,
-                             parent=self.webEngineView)
+        page = WebEnginePage(profile=profile, parent=self.webEngineView)
         if window.set_title_from_page:
             page.titleChanged.connect(self.setWindowTitle)
         if window.allow_scripts_to_close:
@@ -104,7 +114,8 @@ class BrowserView(QMainWindow):
         self.webEngineView.setPage(page)
 
         self.webEngineView.settings().setAttribute(
-            QWebEngineSettings.ShowScrollBars, window.show_scrollbars)
+            QWebEngineSettings.ShowScrollBars, window.show_scrollbars
+        )
         if window.disable_context_menu:
             self.webEngineView.setContextMenuPolicy(Qt.NoContextMenu)
 
@@ -114,18 +125,18 @@ class BrowserView(QMainWindow):
         self.setWindowTitle(window.title)
         if window.icon_set:
             self.set_icon(window.icon_name, window.fallback_icon_files)
-        self.resize(QGuiApplication.primaryScreen().
-                    availableGeometry().size() * 0.7)
+        self.resize(QGuiApplication.primaryScreen().availableGeometry().size() * 0.7)
         self.center()
 
     # shamelessly copy/pasted from qute browser
-    def fake_key_press(self,
-                       key: Qt.Key,
-                       modifier: Qt.KeyboardModifier = Qt.KeyboardModifier.NoModifier) -> None:
+    def fake_key_press(
+        self,
+        key: Qt.Key,
+        modifier: Qt.KeyboardModifier = Qt.KeyboardModifier.NoModifier,
+    ) -> None:
         """Send a fake key event."""
         press_evt = QKeyEvent(QEvent.Type.KeyPress, key, modifier, 0, 0, 0)
-        release_evt = QKeyEvent(QEvent.Type.KeyRelease, key, modifier,
-                                0, 0, 0)
+        release_evt = QKeyEvent(QEvent.Type.KeyRelease, key, modifier, 0, 0, 0)
         self.send_event(press_evt)
         self.send_event(release_evt)
 
@@ -137,9 +148,8 @@ class BrowserView(QMainWindow):
         """
         # This only gives us some mild protection against re-using events, but
         # it's certainly better than a segfault.
-        if getattr(evt, 'posted', False):
-            logging.error("Can't re-use an event which was already "
-                          "posted!")
+        if getattr(evt, "posted", False):
+            logging.error("Can't re-use an event which was already " "posted!")
             return
 
         recipient = self.webEngineView.focusProxy()
@@ -170,7 +180,7 @@ class BrowserView(QMainWindow):
 
 def start(options: Options = Options()):
     args = sys.argv
-    args.append('--disable-seccomp-filter-sandbox')
+    args.append("--disable-seccomp-filter-sandbox")
     if options.single_instance_mode:
         id = options.app_id
         if len(id) < 4:

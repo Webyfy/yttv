@@ -18,7 +18,7 @@ build_job:
     - pip3 install -U pyinstaller
     - git submodule update --init --recursive
     - make appimage
-    - APP_VERSION=$(cat yttv/__init__.py | grep YTTV_VERSION | cut -d'=' -f 2 | cut -d"'" -f 2)
+    - APP_VERSION=$(cat yttv/__init__.py | grep YTTV_VERSION | cut -d'=' -f 2 | cut -d'"' -f 2)
     - APPIMAGE_FILE=$(basename dist/*.AppImage | sed "s/-x86_64.AppImage/-${APP_VERSION}-x86_64.AppImage/")
     - mv dist/*.AppImage ${APPIMAGE_FILE}
     - echo "APPIMAGE_FILE=${APPIMAGE_FILE}" >> build.env
