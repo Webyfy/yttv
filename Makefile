@@ -18,7 +18,7 @@ appimage: portable
 		-d platform/com.webyfy.yttv.desktop dist
 
 gen-reqs:
-	pipreqs pico_project_generator --savepath requirements.txt --force
+	pipreqs yttv --savepath requirements.txt --force
 
 pip: clean
 	python3 setup.py sdist bdist_wheel

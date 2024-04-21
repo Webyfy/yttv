@@ -1,7 +1,8 @@
 import argparse
 import logging
 
-import yttv.yawebview as yawebview
+import yawebview
+
 from yttv import YTTV_VERSION, utility
 
 USER_AGENT = "Roku/DVP-23.0 (23.0.0.99999-02)"
@@ -14,7 +15,9 @@ def intialize_logging(debug: bool = False):
     """
     # Configure logging.
     root_logger = logging.getLogger()
-    log_formatter = logging.Formatter("%(asctime)s [%(levelname)s]: %(message)s")
+    log_formatter = logging.Formatter(
+        "%(asctime)s [%(levelname)s]: %(message)s"
+    )
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(log_formatter)
     root_logger.addHandler(console_handler)
@@ -24,10 +27,14 @@ def intialize_logging(debug: bool = False):
 
 def get_parser():
     parser = argparse.ArgumentParser(
-        prog="yttv", description="YouTube for 10 foot UI with D-pad navigation."
+        prog="yttv",
+        description="YouTube for 10 foot UI with D-pad navigation.",
     )
     parser.add_argument(
-        "-d", "--debug", help="start YouTube on TV in debug mode", action="store_true"
+        "-d",
+        "--debug",
+        help="start YouTube on TV in debug mode",
+        action="store_true",
     )
     parser.add_argument(
         "--version", action="version", version="%(prog)s " + YTTV_VERSION
@@ -59,7 +66,9 @@ def main():
 
     yawebview.start(
         options=yawebview.Options(
-            user_agent=USER_AGENT, single_instance_mode=True, app_id="com.webyfy.yttv"
+            user_agent=USER_AGENT,
+            single_instance_mode=True,
+            app_id="com.webyfy.yttv",
         )
     )
 

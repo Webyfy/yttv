@@ -1,1 +1,1 @@
-# PySide2==5.15.2.1
+git+https://gitlab.com/webyfy/iot/e-gurukul/yawebview.git@8f4446e0
