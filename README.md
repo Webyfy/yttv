@@ -16,15 +16,22 @@ optional arguments:
 ```
 
 ## Development
-### Prerequisites (Ubuntu)
+> It is recommended to use Python Virtual Environment for development
+### Install Prerequisites (Ubuntu)
 ```shell
-sudo apt install python3-pyside2.qtwebenginewidgets
-sudo apt install -y --no-install-recommends git python3-pip
+sudo apt install python3-pyside2.qtwebenginewidgets git
+sudo apt install -y --no-install-recommends python3-pip
+```
+
+### Get Source Code & Install required python packages
+```shell
+git clone https://gitlab.com/webyfy/iot/e-gurukul/yttv.git
+cd yttv
+pip3 install -r requirements.txt
 ```
 
 ### Run from Source
 ```shell
-pip3 install -r requirements.txt
 python3 -m yttv
 ```
 
@@ -34,7 +41,6 @@ python3 -m yttv
 sudo apt install -y software-properties-common && sudo add-apt-repository ppa:jyrki-pulliainen/dh-virtualenv -y
 
 sudo apt install -y dh-virtualenv dpkg-dev debhelper make
-pip3 install -r requirements.txt
 pip3 install -U argparse-manpage
 make deb
 ```
@@ -42,7 +48,6 @@ make deb
 ### AppImage
 ```shell
 sudo apt install -y make binutils wget
-pip3 install -r requirements.txt
 pip3 install pyinstaller
 make appimage
 ```
