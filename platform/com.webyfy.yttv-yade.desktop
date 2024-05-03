@@ -2,15 +2,9 @@
 Name=YouTube on TV
 GenericName=YouTube
 Comment=YouTube for 10 foot UI with D-pad navigation
-Exec=env GDK_BACKEND=x11 yttv
+Exec=env GDK_BACKEND=x11 yttv --freeze-on-focus-loss
 Icon=com.webyfy.yttv
 Terminal=false
 Type=Application
 Categories=Network;Video;AudioVideo;
-NotShowIn=YADE
-Actions=freeze-on-focus-loss;
-
-[Desktop Action freeze-on-focus-loss]
-Name=Freeze On Focus Loss
-Exec=yttv --freeze-on-focus-loss
-
+OnlyShowIn=YADE

@@ -18,7 +18,7 @@ appimage: portable
 		-d platform/com.webyfy.yttv.desktop dist
 
 gen-reqs:
-	pipreqs yttv --savepath requirements.txt --force
+	pipreqs yttv --savepath requirements.txt --mode compat --force
 
 pip: clean
 	python3 setup.py sdist bdist_wheel
@@ -27,7 +27,7 @@ version := $(shell cat yttv/__init__.py | grep YTTV_VERSION | cut -d'=' -f 2 | c
 codename := $(shell lsb_release -a 2>/dev/null | grep Codename | cut -f 2)
 
 deb: man
-	chmod -x debian/*.install debian/*.links
+	chmod -x debian/*.install debian/*.links debian/*.manpages
 	dpkg-buildpackage -us -uc
 	mv "../yttv_$(version)_all.deb" "./yttv_$(version)+$(codename)_all.deb"
 

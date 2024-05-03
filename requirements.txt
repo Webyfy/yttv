@@ -1,1 +1,1 @@
-yawebview==0.2.6
+yawebview~=0.2.6

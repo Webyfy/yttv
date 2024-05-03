@@ -39,6 +39,11 @@ def get_parser():
     parser.add_argument(
         "--version", action="version", version="%(prog)s " + YTTV_VERSION
     )
+    parser.add_argument(
+        "--freeze-on-focus-loss",
+        help="Freeze App on losing focus",
+        action="store_true",
+    )
     return parser
 
 
@@ -52,6 +57,7 @@ def main():
         scrollbars=False,
         context_menu=False,
         allow_scripts_to_close=True,
+        freeze_on_focus_loss=args.freeze_on_focus_loss,
     )
 
     icon_file = utility.get_icon_path("com.webyfy.yttv.png")

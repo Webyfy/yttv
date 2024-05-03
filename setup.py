@@ -7,6 +7,11 @@ from setuptools import find_packages, setup
 
 from yttv import YTTV_VERSION
 
+requires = [
+    "yawebview",
+    # 'PySide2',
+]
+
 _ROOT = path.abspath(path.dirname(__file__))
 
 with open(path.join(_ROOT, "README.md")) as f:
@@ -46,6 +51,7 @@ setup(
     maintainer_email="info@webyfy.com",
     packages=find_packages(),
     package_data={"yttv": __package_data()},
+    install_requires=requires,
     entry_points={"console_scripts": ["yttv = yttv.__main__:main"]},
     python_requires=">=3.8",
     classifiers=[

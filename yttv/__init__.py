@@ -1,1 +1,1 @@
-YTTV_VERSION = "0.4.1"
+YTTV_VERSION = "0.4.3"

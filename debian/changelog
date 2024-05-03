@@ -1,8 +1,14 @@
+yttv (0.4.3) unstable; urgency=low
+
+  * Add option to freeze on losing focus
+
+ -- Webyfy <info@webyfy.com>  Fri, 03 May 2024 17:30:25 +0530
+
 yttv (0.4.2) unstable; urgency=low
 
   * Update yawebview git package to pypi package
 
-Webyfy <info@webyfy.com>  Fri, 03 May 2024 13:36:11 +0530
+ -- Webyfy <info@webyfy.com>  Fri, 03 May 2024 13:36:11 +0530
 
 yttv (0.4.1) unstable; urgency=low
 
