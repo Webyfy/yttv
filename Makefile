@@ -14,8 +14,10 @@ appimage: portable
 	wget -c https://gitlab.com/quna/python-packaging/-/raw/main/pyinstaller2appimage \
 		-O pyinstaller2appimage
 	chmod +x ./pyinstaller2appimage 
+	cp platform/com.webyfy.yttv.desktop dist
+	sed -i '/NotShowIn/d' dist/com.webyfy.yttv.desktop
 	./pyinstaller2appimage -i yttv/icons/com.webyfy.yttv.png \
-		-d platform/com.webyfy.yttv.desktop dist
+		-d dist/com.webyfy.yttv.desktop dist
 
 gen-reqs:
 	pipreqs yttv --savepath requirements.txt --mode compat --force

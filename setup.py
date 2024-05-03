@@ -7,10 +7,7 @@ from setuptools import find_packages, setup
 
 from yttv import YTTV_VERSION
 
-requires = [
-    "yawebview",
-    # 'PySide2',
-]
+requires = ["yawebview"]
 
 _ROOT = path.abspath(path.dirname(__file__))
 
