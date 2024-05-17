@@ -2,7 +2,6 @@
 
 from os import path, walk
 
-from build_manpages import build_manpages, get_build_py_cmd, get_install_cmd
 from setuptools import find_packages, setup
 
 from yttv import YTTV_VERSION
@@ -61,11 +60,4 @@ setup(
         "Topic :: Internet",
         "Topic :: Multimedia :: Video",
     ],
-    cmdclass={
-        "build_manpages": build_manpages,
-        # Re-define build_py and install commands so the manual pages
-        # are automatically re-generated and installed
-        "build_py": get_build_py_cmd(),
-        "install": get_install_cmd(),
-    },
 )

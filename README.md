@@ -41,7 +41,7 @@ python3 -m yttv
 sudo apt install -y software-properties-common && sudo add-apt-repository ppa:jyrki-pulliainen/dh-virtualenv -y
 
 sudo apt install -y dh-virtualenv dpkg-dev debhelper make
-pip3 install -U argparse-manpage
+pip3 install -U help2man
 make deb
 ```
 
