@@ -34,8 +34,8 @@ deb: man
 	mv "../yttv_$(version)_all.deb" "./yttv_$(version)+$(codename)_all.deb"
 
 man: clean
+	chmod +x ./run
 	python3 -m help2man ./run > debian/yttv.1
-	# python3 setup.py build_manpages
 
 clean:
 	git clean -fdX --exclude="!pyinstaller2appimage"
