@@ -1,3 +1,10 @@
+yttv (0.4.5) unstable; urgency=low
+
+  * Fix debian manpage generation
+  * Fix version number missmatch
+
+ -- Webyfy <info@webyfy.com>  Fri, 21 Jun 2024 20:54:09 +0530
+
 yttv (0.4.3) unstable; urgency=low
 
   * Add option to freeze on losing focus
