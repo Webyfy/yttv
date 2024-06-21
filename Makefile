@@ -28,14 +28,14 @@ pip: clean
 version := $(shell cat yttv/__init__.py | grep YTTV_VERSION | cut -d'=' -f 2 | cut -d'"' -f 2)
 codename := $(shell lsb_release -a 2>/dev/null | grep Codename | cut -f 2)
 
-deb: man
+deb: clean
 	chmod -x debian/*.install debian/*.links debian/*.manpages
 	dpkg-buildpackage -us -uc
 	mv "../yttv_$(version)_all.deb" "./yttv_$(version)+$(codename)_all.deb"
 
-man: clean
+man: 
 	chmod +x ./run
-	python3 -m help2man ./run > debian/yttv.1
+	python3 -m help2man ./run > platform/yttv.1
 
 clean:
 	git clean -fdX --exclude="!pyinstaller2appimage"
