@@ -16,6 +16,7 @@ build_job:
     - apt install -y python3-pyside2.qtwebenginewidgets git make binutils wget
     - apt install -y --no-install-recommends python3-pip
     - pip3 install -U pyinstaller
+    - pip3 install -r requirements.txt
     - git submodule update --init --recursive
     - make appimage
     - APP_VERSION=$(cat yttv/__init__.py | grep YTTV_VERSION | cut -d'=' -f 2 | cut -d'"' -f 2)
