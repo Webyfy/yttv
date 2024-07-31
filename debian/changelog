@@ -1,3 +1,9 @@
+yttv (0.4.6) unstable; urgency=low
+
+  * Add X-YADE category to yade desktop file
+
+ -- Webyfy <info@webyfy.com>  Wed, 31 Jul 2024 14:32:09 +0530
+
 yttv (0.4.5) unstable; urgency=low
 
   * Fix debian manpage generation
