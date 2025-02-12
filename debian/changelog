@@ -1,3 +1,9 @@
+yttv (0.4.7) unstable; urgency=low
+
+  * Enable reloading on failure to load page
+
+ -- Webyfy <info@webyfy.com>  Wed, 12 Feb 2025 15:07:16 +0530
+
 yttv (0.4.6) unstable; urgency=low
 
   * Add X-YADE category to yade desktop file

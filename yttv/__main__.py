@@ -15,9 +15,7 @@ def intialize_logging(debug: bool = False):
     """
     # Configure logging.
     root_logger = logging.getLogger()
-    log_formatter = logging.Formatter(
-        "%(asctime)s [%(levelname)s]: %(message)s"
-    )
+    log_formatter = logging.Formatter("%(asctime)s [%(levelname)s]: %(message)s")
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(log_formatter)
     root_logger.addHandler(console_handler)
@@ -75,6 +73,7 @@ def main():
             user_agent=USER_AGENT,
             single_instance_mode=True,
             app_id="com.webyfy.yttv",
+            reload_on_fail=True,
         )
     )
 
